@@ -52,9 +52,9 @@ module.exports = grammar({
 
     // IF 结构
     tpl_if: $ => seq('{if', field('cond', $.expression), '}'),
+    tpl_else: $ => '{else}',
     tpl_elseif: $ => seq('{elseif', field('cond', $.expression), '}'),
-    tpl_else: $ => seq('{else}'),
-    tpl_endif: $ => seq('{/if}'),
+    tpl_endif: $ => '{/if}',
 
     // 比较标签
     tpl_compare: $ => seq('{compare', field('args', $.expression), '}'),
@@ -67,7 +67,7 @@ module.exports = grammar({
     // SWITCH 结构
     tpl_switch: $ => seq('{switch', field('expr', $.expression), '}'),
     tpl_case: $ => seq('{case', field('expr', $.expression), '}'),
-    tpl_endswitch: $ => seq('{/switch}'),
+    tpl_endswitch: $ => '{/switch}',
 
     // 包含模板
     tpl_include: $ => seq('{include', field('args', $.expression), '/}'),
