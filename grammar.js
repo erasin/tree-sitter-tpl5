@@ -25,7 +25,19 @@ module.exports = grammar({
       $.tpl_directive
     ),
 
-    comment: $ => token(seq('{*', /[^*]*\*+([^/*][^*]*\*+)*/, '}')),
+    comment: $ => choice(
+      seq(
+        '{//',
+        /[^}]+/,   // 所有非 `}` 的字符
+        '}'
+      ),
+      seq(
+        '{/*',
+        repeat(choice(/[^*]/, /\*[^/]/, /\n/)), // 非终止符匹配
+        '*/',
+        '}'
+      )
+    ),
 
     text: $ => token(/[^{}]+/),
 
@@ -73,17 +85,20 @@ module.exports = grammar({
     tpl_include: $ => seq('{include', field('args', $.expression), '/}'),
 
     // 通用表达式 (变量、函数调用、字面量、管道)
-    expression: $ => choice(
-      $.variable,
-      $.function_call,
-      seq($.variable, '|', $.function_call),
-      /[^{}]+?/
+    expression: $ => seq(
+      '{',
+      optional('$'),
+      field('expression', $.pipe_expression),
+      '}'
     ),
 
-    variable: $ => token(choice(
-      /\$[a-zA-Z_]\w*(?:\.[a-zA-Z_]\w*)*/,
-      /__(?:ROOT|MODULE|ACTION|URL|PUBLIC)__/
-    )),
+    variable: $ => seq(
+      '$',
+      $.identifier,
+      repeat($.property_access)
+    ),
+
+    property_access: $ => seq('.', $.identifier),
 
     function_call: $ => seq(
       /[a-zA-Z_]\w*/,
@@ -91,5 +106,14 @@ module.exports = grammar({
       optional(seq($.expression, repeat(seq(',', $.expression)))),
       ')'
     ),
+
+    pipe_function: $ => seq(
+      '|',
+      $.identifier,
+      optional(seq('=', $.pipe_argument))
+    ),
+
+    pipe_argument: $ => /[^|}]+/,
+    identifier: _ => /[a-zA-Z_][a-zA-Z0-9_]*/,
   }
 });

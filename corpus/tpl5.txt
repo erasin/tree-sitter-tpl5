@@ -1,0 +1,133 @@
+===
+// 单行注释
+{// 这是一个注释 }
+---
+(template
+  (comment) @1)
+
+===
+// 多行注释
+{/* 这是
+多行注释 */}
+---
+(template
+  (comment) @1)
+
+===
+// 变量输出
+{$name}
+---
+(template
+  (variable) @1)
+
+===
+// 默认值
+{$name|default='匿名'}
+---
+(template
+  (variable) @1)
+
+===
+// if 条件判断
+{if condition}
+内容
+{/if}
+---
+(template
+  (tpl_if
+    (tpl_if_open)
+    (tpl_text)
+    (tpl_if_close)) @1)
+
+===
+// else 分支
+{if condition}
+内容
+{else}
+其他内容
+{/if}
+---
+(template
+  (tpl_if
+    (tpl_if_open)
+    (tpl_text)
+    (tpl_else)
+    (tpl_text)
+    (tpl_if_close)) @1)
+
+===
+// elseif 分支
+{if condition}
+内容
+{elseif other_condition}
+其他内容
+{/if}
+---
+(template
+  (tpl_if
+    (tpl_if_open)
+    (tpl_text)
+    (tpl_elseif)
+    (tpl_text)
+    (tpl_if_close)) @1)
+
+===
+// foreach 循环
+{foreach $list as $item}
+{$item}
+{/foreach}
+---
+(template
+  (tpl_foreach
+    (tpl_foreach_open)
+    (variable)
+    (tpl_foreach_close)) @1)
+
+===
+// volist 循环
+{volist name="list" id="item"}
+{$item}
+{/volist}
+---
+(template
+  (tpl_volist
+    (tpl_volist_open)
+    (variable)
+    (tpl_volist_close)) @1)
+
+===
+// include 标签
+{include file="header"}
+---
+(template
+  (tpl_include) @1)
+
+===
+// php 代码块
+{php}
+echo "Hello World";
+{/php}
+---
+(template
+  (tpl_php_block) @1)
+
+===
+// 使用函数
+{function="date('Y-m-d')"}
+---
+(template
+  (tpl_function) @1)
+
+===
+// 使用默认值
+{$name|default='匿名'}
+---
+(template
+  (variable) @1)
+
+===
+// 赋值标签
+{assign name="name" value="value"}
+---
+(template
+  (tpl_assign) @1)

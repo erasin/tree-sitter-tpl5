@@ -14,16 +14,13 @@ importers:
       node-gyp-build:
         specifier: ^4.8.2
         version: 4.8.4
-      tree-sitter:
-        specifier: ^0.21.1
-        version: 0.21.1
     devDependencies:
       prebuildify:
         specifier: ^6.0.1
         version: 6.0.1
       tree-sitter-cli:
-        specifier: ^0.25.3
-        version: 0.25.4
+        specifier: 0.20.7
+        version: 0.20.7
 
 packages:
 
@@ -109,13 +106,9 @@ packages:
     resolution: {integrity: sha512-ujeqbceABgwMZxEJnk2HDY2DlnUZ+9oEcb1KzTVfYHio0UE6dG71n60d8D2I4qNvleWrrXpmjpt7vZeF1LnMZQ==}
     engines: {node: '>=6'}
 
-  tree-sitter-cli@0.25.4:
-    resolution: {integrity: sha512-tSOgiUuNH1xgSopWHMb+2EPuzIawj7/7/k0cNTNInBde21R0e53ElygJ+76PLjai2BOjnCzy9n8W0o7Eo9GVgA==}
-    engines: {node: '>=12.0.0'}
+  tree-sitter-cli@0.20.7:
+    resolution: {integrity: sha512-MHABT8oCPr4D0fatsPo6ATQ9H4h9vHpPRjlxkxJs80tpfAEKGn6A1zU3eqfCKBcgmfZDe9CiL3rKOGMzYHwA3w==}
     hasBin: true
-
-  tree-sitter@0.21.1:
-    resolution: {integrity: sha512-7dxoA6kYvtgWw80265MyqJlkRl4yawIjO7S5MigytjELkX43fV2WsAXzsNfO7sBpPPCF5Gp0+XzHk0DwLCq3xQ==}
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -215,12 +208,7 @@ snapshots:
       inherits: 2.0.4
       readable-stream: 3.6.2
 
-  tree-sitter-cli@0.25.4: {}
-
-  tree-sitter@0.21.1:
-    dependencies:
-      node-addon-api: 8.3.1
-      node-gyp-build: 4.8.4
+  tree-sitter-cli@0.20.7: {}
 
   util-deprecate@1.0.2: {}
 

@@ -1,5 +1,10 @@
 [
   {
+    "type": "comment",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "expression",
     "named": true,
     "fields": {},
@@ -36,7 +41,6 @@
   {
     "type": "source_file",
     "named": true,
-    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -308,17 +312,16 @@
     "named": false
   },
   {
+    "type": "*/",
+    "named": false
+  },
+  {
     "type": ",",
     "named": false
   },
   {
     "type": "/}",
     "named": false
-  },
-  {
-    "type": "comment",
-    "named": true,
-    "extra": true
   },
   {
     "type": "text",
@@ -346,6 +349,14 @@
   },
   {
     "type": "{$",
+    "named": false
+  },
+  {
+    "type": "{/*",
+    "named": false
+  },
+  {
+    "type": "{//",
     "named": false
   },
   {
