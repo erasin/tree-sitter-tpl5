@@ -9,111 +9,179 @@
 module.exports = grammar({
   name: 'tpl5',
 
-  extras: $ => [
-    /\s+/,
-    $.comment,
+  externals: $ => [
+    $._start_tag,   // 用于扫描 { 开始符
+    $._end_tag      // 用于扫描 } 结束符
   ],
 
   rules: {
-    source_file: $ => repeat($._element),
+    // 主规则：模板由混合内容组成
+    source_file: $ => repeat($._node),
 
-    _element: $ => choice(
-      $.comment,
-      $.text,
-      $.tpl_tag,
-      $.tpl_output,
-      $.tpl_directive
+    _node: $ => choice(
+      $.tp_content,  // TP5 语法结构
+      $.html_content // 普通 HTML 内容
     ),
 
-    comment: $ => choice(
-      seq(
-        '{//',
-        /[^}]+/,   // 所有非 `}` 的字符
-        '}'
-      ),
-      seq(
-        '{/*',
-        repeat(choice(/[^*]/, /\*[^/]/, /\n/)), // 非终止符匹配
-        '*/',
-        '}'
-      )
+    // HTML 内容（作为原始文本处理）
+    html_content: $ => /[^{]+/,
+
+    // TP5 语法结构
+    tp_content: $ => choice(
+      $.comment_tag,
+      $.variable_tag,
+      $.literal_tag,
+      $.function_tag,
+      $.control_tag,
+      $.compare_tag,
+      $.defined_tag,
+      $.include_tag,
+      $.extend_tag
     ),
 
-    text: $ => token(/[^{}]+/),
-
-    tpl_tag: $ => choice(
-      $.tpl_if,
-      $.tpl_elseif,
-      $.tpl_else,
-      $.tpl_endif,
-      $.tpl_compare,
-      $.tpl_volist,
-      $.tpl_foreach,
-      $.tpl_switch,
-      $.tpl_case,
-      $.tpl_endswitch,
-      $.tpl_default,
-      $.tpl_include
+    // 注释标签（增强版）
+    comment_tag: $ => choice(
+      $.single_line_comment,  // 单行注释
+      $.multi_line_comment    // 多行注释
     ),
-    tpl_output: $ => seq(
-      choice('{$', '{:', '{='),
-      field('expr', $.expression),
-      '}'
-    ),
-    tpl_directive: $ => seq('{', /[a-zA-Z_][\w]*\s+/, $.expression, '}'),
 
-    // IF 结构
-    tpl_if: $ => seq('{if', field('cond', $.expression), '}'),
-    tpl_else: $ => '{else}',
-    tpl_elseif: $ => seq('{elseif', field('cond', $.expression), '}'),
-    tpl_endif: $ => '{/if}',
+    // 单行注释 {// ... }
+    single_line_comment: $ => seq(
+      '{//',
+      /(\\\}|[^}])*/,  // 允许转义的 } 和任意非}字符
+      /}?/              // 兼容忘记闭合的情况
+    ),
+
+    // 多行注释 {/* ... */}
+    multi_line_comment: $ => seq(
+      '{/*',
+      /[^*]*[*]+([^/*][^*]*[*]+)*/, // 复杂内容匹配
+      '*/}'
+    ),
+
+    // 变量标签 {$var}
+    variable_tag: $ => seq(
+      '{', $._start_tag,
+      field('content', choice(
+        $.variable_chain,     // 变量路径
+        $.system_variable,    // 系统变量
+        $.const         // Think 常量
+      )),
+      '}', $._end_tag
+    ),
+
+    // 变量链（含过滤器）
+    variable_chain: $ => seq(
+      field('base', $.identifier),
+      optional(seq('.', field('property', $.identifier))),
+      repeat(seq('|', $.filter))
+    ),
+
+    // 过滤器
+    filter: $ => seq(
+      field('function_call', $.identifier),
+      optional(seq('=', $.identifier))
+    ),
+
+    // 系统变量 {$Think.var}
+    system_variable: $ => seq(
+      'Think.',
+      choice('server', 'session', 'cookie', 'get', 'post', 'request', 'const'),'.', $.identifier),
+
+    literal_tag: $ => seq(
+      '{literal}', $._node, '{/literal}'
+    ),
+
+    // 控制结构（完整实现示例）
+    control_tag: $ => choice(
+      $._control_tag,
+      $.switch_tag,
+    ),
+
+    // if 标签结构
+    if_tag: $ => seq(
+      '{','if', field('params', $.tag_parameters), '}',
+      field('content', repeat($._node)),
+      "{/if}"
+    ),
+    _control_tag: $ => seq(
+      '{',$.control_keyword, field('params', $.compare_params), '}',
+      field('content', repeat($._node)),
+      '{/',$.control_keyword, '}'
+    ),
+    control_keyword:$ => choice('if','volist','range','in','notin'),
+    else_tag: $ => seq('{','else','}'),
+    switch_tag: $ => seq(
+      '{','switch', field('params', $.compare_params), '}',
+      field('content', repeat($._node)),
+      optional($.default_tag),
+      '{/switch}'
+    ),
+    default_tag: $ => seq('{','default',' /}',$._node),
 
     // 比较标签
-    tpl_compare: $ => seq('{compare', field('args', $.expression), '}'),
+    compare_tag: $ => seq(
+      '{',$.keyword, field('params', $.compare_params), '}',
+      field('content', repeat($._node)),
+      '{/',$.keyword, '}'
+    ),
+    keyword:$ => choice(
+      'eq',
+      'neq',
+      'gt',
+      'lt',
+      'egt',
+      'elt',
+      'empty',
+      'notempty'
+      ),
 
-    // 循环结构
-    tpl_volist: $ => seq('{volist', field('args', $.expression), '}'),
-    tpl_foreach: $ => seq('{foreach', field('args', $.expression), '}'),
-    tpl_default: $ => seq('{default', field('args', $.expression), '}'),
-
-    // SWITCH 结构
-    tpl_switch: $ => seq('{switch', field('expr', $.expression), '}'),
-    tpl_case: $ => seq('{case', field('expr', $.expression), '}'),
-    tpl_endswitch: $ => '{/switch}',
-
-    // 包含模板
-    tpl_include: $ => seq('{include', field('args', $.expression), '/}'),
-
-    // 通用表达式 (变量、函数调用、字面量、管道)
-    expression: $ => seq(
-      '{',
-      optional('$'),
-      field('expression', $.pipe_expression),
+    // 语言函数 {:__('text')}
+    function_tag: $ => seq(
+      '{:',
+      seq(field('function', $.identifier),'(',$._node,')'),
       '}'
     ),
 
-    variable: $ => seq(
-      '$',
-      $.identifier,
-      repeat($.property_access)
+    // 常量（带 __ 包裹）
+    const: $ => seq(
+      '__',
+      field('name', $.identifier),
+      '__'
     ),
 
-    property_access: $ => seq('.', $.identifier),
-
-    function_call: $ => seq(
-      /[a-zA-Z_]\w*/,
-      '(',
-      optional(seq($.expression, repeat(seq(',', $.expression)))),
-      ')'
+    defined_tag: $ => seq(
+      '{','defined', $.tag_parameters, '}',
+      field('content', repeat($._node)),
+      '{/defined}'
     ),
 
-    pipe_function: $ => seq(
-      '|',
-      $.identifier,
-      optional(seq('=', $.pipe_argument))
+    block_tag: $ => seq(
+      '{,','block', $.tag_parameters, '}',
+      field('content', repeat($._node)),
+      '{/block}'
     ),
 
-    pipe_argument: $ => /[^|}]+/,
-    identifier: _ => /[a-zA-Z_][a-zA-Z0-9_]*/,
+    include_tag: $ => seq('{','include', $.tag_parameters, '/}'),
+    extend_tag: $ => seq('{','extend', $.tag_parameters, '/}'),
+
+    // 辅助规则
+    tag_parameters: $ => repeat1(seq(
+      field('name', $.identifier),
+      '=',
+      field('value', choice($.string, $.number, $.variable_ref))
+    )),
+    compare_params: $ => seq(
+      'name=', field('var', $.variable_ref),
+      'value=', field('value', choice($.string, $.number, $.variable_ref))
+    ),
+    variable_ref: $ => seq('$', $.identifier),
+    // 共用规则
+    identifier: $ => /[a-zA-Z_][a-zA-Z0-9_]*/,
+    string: $ => choice(
+      seq("'", /[^']*/, "'"),
+      seq('"', /[^"]*/, '"')
+    ),
+    number: $ => /\d+/,
   }
 });
