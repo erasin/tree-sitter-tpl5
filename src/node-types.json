@@ -1,42 +1,377 @@
 [
   {
-    "type": "comment",
+    "type": "block_comment",
     "named": true,
     "fields": {}
   },
   {
-    "type": "expression",
+    "type": "block_keyword",
     "named": true,
-    "fields": {},
+    "fields": {}
+  },
+  {
+    "type": "block_statement",
+    "named": true,
+    "fields": {
+      "parameter": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "parameter",
+            "named": true
+          }
+        ]
+      },
+      "params": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "parameter",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "variable_statement",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "variable_statement",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
-      "required": false,
+      "multiple": false,
+      "required": true,
       "types": [
         {
-          "type": "function_call",
-          "named": true
-        },
-        {
-          "type": "variable",
+          "type": "block_keyword",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "function_call",
+    "type": "comment_statement",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
-      "required": false,
+      "multiple": false,
+      "required": true,
       "types": [
         {
-          "type": "expression",
+          "type": "block_comment",
+          "named": true
+        },
+        {
+          "type": "line_comment",
           "named": true
         }
       ]
     }
+  },
+  {
+    "type": "compare_keyword",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "compare_statement",
+    "named": true,
+    "fields": {
+      "parameter": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "parameter",
+            "named": true
+          }
+        ]
+      },
+      "params": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "parameter",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "variable_statement",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "variable_statement",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "compare_keyword",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "const",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "control",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "control_repeat",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "control_statement",
+    "named": true,
+    "fields": {
+      "parameter": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "parameter",
+            "named": true
+          }
+        ]
+      },
+      "params": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "parameter",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "variable_statement",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "variable_statement",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "control",
+          "named": true
+        },
+        {
+          "type": "control_repeat",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "default_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "return",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "extend_keyword",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "extend_statement",
+    "named": true,
+    "fields": {
+      "parameter": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "parameter",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "variable_statement",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "extend_keyword",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "function_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "html_content",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "line_comment",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "source_file",
@@ -47,78 +382,18 @@
       "required": false,
       "types": [
         {
-          "type": "comment",
+          "type": "html_content",
           "named": true
         },
         {
-          "type": "text",
-          "named": true
-        },
-        {
-          "type": "tpl_directive",
-          "named": true
-        },
-        {
-          "type": "tpl_output",
-          "named": true
-        },
-        {
-          "type": "tpl_tag",
+          "type": "statement",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "tpl_case",
-    "named": true,
-    "fields": {
-      "expr": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "tpl_compare",
-    "named": true,
-    "fields": {
-      "args": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "tpl_default",
-    "named": true,
-    "fields": {
-      "args": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "tpl_directive",
+    "type": "statement",
     "named": true,
     "fields": {},
     "children": {
@@ -126,182 +401,108 @@
       "required": true,
       "types": [
         {
-          "type": "expression",
+          "type": "block_statement",
+          "named": true
+        },
+        {
+          "type": "comment_statement",
+          "named": true
+        },
+        {
+          "type": "compare_statement",
+          "named": true
+        },
+        {
+          "type": "const",
+          "named": true
+        },
+        {
+          "type": "control",
+          "named": true
+        },
+        {
+          "type": "control_repeat",
+          "named": true
+        },
+        {
+          "type": "control_statement",
+          "named": true
+        },
+        {
+          "type": "default_statement",
+          "named": true
+        },
+        {
+          "type": "extend_statement",
+          "named": true
+        },
+        {
+          "type": "function_statement",
+          "named": true
+        },
+        {
+          "type": "variable_statement",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "tpl_elseif",
+    "type": "string",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "variable_statement",
     "named": true,
     "fields": {
-      "cond": {
-        "multiple": false,
+      "name": {
+        "multiple": true,
         "required": true,
         "types": [
           {
-            "type": "expression",
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "variable",
+            "named": true
+          }
+        ]
+      },
+      "property": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
             "named": true
           }
         ]
       }
-    }
-  },
-  {
-    "type": "tpl_foreach",
-    "named": true,
-    "fields": {
-      "args": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "tpl_if",
-    "named": true,
-    "fields": {
-      "cond": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "tpl_include",
-    "named": true,
-    "fields": {
-      "args": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "tpl_output",
-    "named": true,
-    "fields": {
-      "expr": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "tpl_switch",
-    "named": true,
-    "fields": {
-      "expr": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "tpl_tag",
-    "named": true,
-    "fields": {},
+    },
     "children": {
-      "multiple": false,
-      "required": true,
+      "multiple": true,
+      "required": false,
       "types": [
         {
-          "type": "tpl_case",
-          "named": true
-        },
-        {
-          "type": "tpl_compare",
-          "named": true
-        },
-        {
-          "type": "tpl_default",
-          "named": true
-        },
-        {
-          "type": "tpl_else",
-          "named": true
-        },
-        {
-          "type": "tpl_elseif",
-          "named": true
-        },
-        {
-          "type": "tpl_endif",
-          "named": true
-        },
-        {
-          "type": "tpl_endswitch",
-          "named": true
-        },
-        {
-          "type": "tpl_foreach",
-          "named": true
-        },
-        {
-          "type": "tpl_if",
-          "named": true
-        },
-        {
-          "type": "tpl_include",
-          "named": true
-        },
-        {
-          "type": "tpl_switch",
-          "named": true
-        },
-        {
-          "type": "tpl_volist",
+          "type": "identifier",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "tpl_volist",
-    "named": true,
-    "fields": {
-      "args": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      }
-    }
+    "type": "\"",
+    "named": false
+  },
+  {
+    "type": "$",
+    "named": false
+  },
+  {
+    "type": "'",
+    "named": false
   },
   {
     "type": "(",
@@ -316,91 +517,151 @@
     "named": false
   },
   {
-    "type": ",",
+    "type": ".",
     "named": false
   },
   {
-    "type": "/}",
+    "type": "/",
     "named": false
   },
   {
-    "type": "text",
+    "type": "/*",
+    "named": false
+  },
+  {
+    "type": "//",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": "=",
+    "named": false
+  },
+  {
+    "type": "__",
+    "named": false
+  },
+  {
+    "type": "block",
+    "named": false
+  },
+  {
+    "type": "case",
+    "named": false
+  },
+  {
+    "type": "defined",
+    "named": false
+  },
+  {
+    "type": "egt",
+    "named": false
+  },
+  {
+    "type": "else",
+    "named": false
+  },
+  {
+    "type": "elt",
+    "named": false
+  },
+  {
+    "type": "empty",
+    "named": false
+  },
+  {
+    "type": "eq",
+    "named": false
+  },
+  {
+    "type": "extend",
+    "named": false
+  },
+  {
+    "type": "for",
+    "named": false
+  },
+  {
+    "type": "foreach",
+    "named": false
+  },
+  {
+    "type": "function",
     "named": true
   },
   {
-    "type": "tpl_else",
+    "type": "gt",
+    "named": false
+  },
+  {
+    "type": "identifier",
     "named": true
   },
   {
-    "type": "tpl_endif",
+    "type": "if",
+    "named": false
+  },
+  {
+    "type": "in",
+    "named": false
+  },
+  {
+    "type": "include",
+    "named": false
+  },
+  {
+    "type": "literal",
+    "named": false
+  },
+  {
+    "type": "lt",
+    "named": false
+  },
+  {
+    "type": "neq",
+    "named": false
+  },
+  {
+    "type": "notempty",
+    "named": false
+  },
+  {
+    "type": "notin",
+    "named": false
+  },
+  {
+    "type": "number",
     "named": true
   },
   {
-    "type": "tpl_endswitch",
+    "type": "parameter",
     "named": true
+  },
+  {
+    "type": "range",
+    "named": false
+  },
+  {
+    "type": "return",
+    "named": true
+  },
+  {
+    "type": "switch",
+    "named": false
   },
   {
     "type": "variable",
     "named": true
   },
   {
+    "type": "volist",
+    "named": false
+  },
+  {
     "type": "{",
-    "named": false
-  },
-  {
-    "type": "{$",
-    "named": false
-  },
-  {
-    "type": "{/*",
-    "named": false
-  },
-  {
-    "type": "{//",
-    "named": false
-  },
-  {
-    "type": "{:",
-    "named": false
-  },
-  {
-    "type": "{=",
-    "named": false
-  },
-  {
-    "type": "{case",
-    "named": false
-  },
-  {
-    "type": "{compare",
-    "named": false
-  },
-  {
-    "type": "{default",
-    "named": false
-  },
-  {
-    "type": "{elseif",
-    "named": false
-  },
-  {
-    "type": "{foreach",
-    "named": false
-  },
-  {
-    "type": "{if",
-    "named": false
-  },
-  {
-    "type": "{include",
-    "named": false
-  },
-  {
-    "type": "{switch",
-    "named": false
-  },
-  {
-    "type": "{volist",
     "named": false
   },
   {
