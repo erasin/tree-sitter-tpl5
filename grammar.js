@@ -24,11 +24,11 @@ module.exports = grammar({
       $.html_content, // 普通 HTML 内容
     ),
 
-    // HTML 内容（作为原始文本处理）
-    html_content: () => prec.right(repeat1(/[^\{]+|\{/)),
+    // 普通HTML内容
+    html_content: $ => prec.right(repeat1(/[^\{]+|\{/)),
 
     statement: ($) => seq('{', $._statement, '}'),
-    
+
     // TP5 语法结构
     _statement: $ => choice(
       $.comment_statement,
@@ -74,20 +74,20 @@ module.exports = grammar({
 
     // 过滤器
     _filter: $ => seq(
-      field('name', alias($.identifier,$.function)),
+      field('name', alias($.identifier, $.function)),
       optional(seq('=', $.identifier))
     ),
 
-    control_statement: $ => seq($._control_keyword, field('params', $._parameters)), 
+    control_statement: $ => seq($._control_keyword, field('attributes', $._attributes)),
     _control_keyword: $ => choice($.control, $.control_repeat),
-    control: $ => choice('if', 'range', 'in', 'notin', 'switch', 'case', 'defined','else'),
+    control: $ => choice('if', 'range', 'in', 'notin', 'switch', 'case', 'defined', 'else'),
     control_repeat: $ => choice('volist', 'foreach', 'for'),
 
     default_statement: $ => seq(alias('default', $.return), '/'),
 
 
     // 比较标签
-    compare_statement: $ => seq($.compare_keyword, field('params', $._parameters)),
+    compare_statement: $ => seq($.compare_keyword, field('attributes', $._attributes)),
     compare_keyword: $ => choice(
       'neq',
       'eq',
@@ -113,19 +113,20 @@ module.exports = grammar({
     ),
 
     block_statement: $ => seq(
-      $.block_keyword, field('params', $._parameters)
+      $.block_keyword, field('attributes', $._attributes)
     ),
 
     block_keyword: $ => choice('block', 'literal',),
 
     end_statement: $ => seq('/', choice($._control_keyword, $.compare_keyword, $.block_keyword)),
 
-    extend_statement: $ => seq( $.extend_keyword, $._parameters),
-    extend_keyword: $ => choice('include','extend'),
+    extend_statement: $ => seq($.extend_keyword, $._attributes),
+    extend_keyword: $ => choice('include', 'extend'),
 
     // 辅助规则
-    _parameters: $ => repeat1(seq(
-      field('parameter', alias($.identifier,$.parameter)),
+    // 
+    _attributes: $ => repeat1(seq(
+      field('name', alias($.identifier, $.attribute)),
       '=',
       field('value', choice($.string, $.number, $.variable_statement))
     )),

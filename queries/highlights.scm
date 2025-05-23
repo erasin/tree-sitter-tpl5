@@ -6,7 +6,7 @@
 
 (control) @keyword.control.conditional
 (control_repeat) @keyword.control.repeat
-(parameter) @variable.other.member
+(attribute) @variable.other.member
 
 [
   (block_keyword)

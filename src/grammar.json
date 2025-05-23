@@ -17,9 +17,62 @@
         },
         {
           "type": "SYMBOL",
+          "name": "style_content"
+        },
+        {
+          "type": "SYMBOL",
           "name": "html_content"
         }
       ]
+    },
+    "style_content": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<style"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_attributes"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "css_content"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "statement"
+              }
+            ]
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "</style>"
+        }
+      ]
+    },
+    "css_content": {
+      "type": "PATTERN",
+      "value": "[^{}]+"
     },
     "html_content": {
       "type": "PREC_RIGHT",
@@ -255,10 +308,10 @@
         },
         {
           "type": "FIELD",
-          "name": "params",
+          "name": "attributes",
           "content": {
             "type": "SYMBOL",
-            "name": "_parameters"
+            "name": "_attributes"
           }
         }
       ]
@@ -357,10 +410,10 @@
         },
         {
           "type": "FIELD",
-          "name": "params",
+          "name": "attributes",
           "content": {
             "type": "SYMBOL",
-            "name": "_parameters"
+            "name": "_attributes"
           }
         }
       ]
@@ -458,10 +511,10 @@
         },
         {
           "type": "FIELD",
-          "name": "params",
+          "name": "attributes",
           "content": {
             "type": "SYMBOL",
-            "name": "_parameters"
+            "name": "_attributes"
           }
         }
       ]
@@ -514,7 +567,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_parameters"
+          "name": "_attributes"
         }
       ]
     },
@@ -531,14 +584,14 @@
         }
       ]
     },
-    "_parameters": {
+    "_attributes": {
       "type": "REPEAT1",
       "content": {
         "type": "SEQ",
         "members": [
           {
             "type": "FIELD",
-            "name": "parameter",
+            "name": "name",
             "content": {
               "type": "ALIAS",
               "content": {
@@ -546,7 +599,7 @@
                 "name": "identifier"
               },
               "named": true,
-              "value": "parameter"
+              "value": "attribute"
             }
           },
           {
