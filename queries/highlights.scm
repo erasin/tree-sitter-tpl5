@@ -6,14 +6,39 @@
 (boolean) @constant.builtin.boolean
 (string) @string
 
-(control) @keyword.control.conditional
-(control_repeat) @keyword.control.repeat
+ [
+  "if"
+  "range"
+  "in"
+  "notin"
+  "switch"
+  "case"
+  "defined"
+  "else"
+  "default"
+] @keyword.control.conditional
+
+[
+  "volist"
+  "foreach"
+  "for"
+] @keyword.control.repeat
+
+
 (attribute) @variable.other.member
 
 [
-  (block_keyword)
-  (compare_keyword)
-  (extend_keyword)
+  "neq"
+  "eq"
+  "egt"
+  "elt"
+  "lt"
+  "gt"
+  "notempty"
+  "empty"
+  "block"
+  "literal"
+  "extend"
 ] @keyword
 
 "include" @keyword.control.import

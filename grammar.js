@@ -42,10 +42,6 @@ module.exports = grammar({
       $.variable_statement,
       $.function_statement,
       $.control_statement,
-      $._control_keyword,
-      $.default_statement,
-      $.compare_statement,
-      $.block_statement,
       $.extend_statement
     ),
 
@@ -61,18 +57,18 @@ module.exports = grammar({
     // 多行注释 {/* ... */}
     block_comment: _ =>
       seq(
-        '/','*',
+        '/', '*',
         /[^*]*[*]+([^/*][^*]*[*]+)*/, // 复杂内容匹配
-        '*','/'
+        '*', '/'
       ),
 
     // 变量标签 {$var}
-    variable_statement: $ => seq('$' ,
+    variable_statement: $ => seq('$',
       field('name', alias($.identifier, $.variable)),
       optional(
         choice(
-          repeat(seq(choice("."), field('property', alias($.identifier,$.property)))),
-          repeat(seq(choice("->"), field('method', alias($.identifier,$.function))))
+          repeat(seq(choice("."), field('property', alias($.identifier, $.property)))),
+          repeat(seq(choice("->"), field('method', alias($.identifier, $.function))))
         )
       ),
       optional(repeat(seq('|', $._filter)))
@@ -85,28 +81,29 @@ module.exports = grammar({
     ),
 
     control_statement: $ => seq($._control_keyword, field('attributes', $._attributes)),
-    _control_keyword: $ => choice($.control, $.control_repeat),
-    control: $ => choice('if', 'range', 'in', 'notin', 'switch', 'case', 'defined', 'else'),
-    control_repeat: $ => choice('volist', 'foreach', 'for'),
-    default_statement: $ => seq(alias('default', $.return), '/'),
-    end_statement: $ => seq('/', choice($._control_keyword, $.compare_keyword, $.block_keyword)),
+    end_statement: $ => seq('/', $._control_keyword),
+
     // 比较标签
-    compare_statement: $ => seq($.compare_keyword, field('attributes', $._attributes)),
-    compare_keyword: $ => choice(
-      'neq',
-      'eq',
-      'egt',
-      'elt',
-      'lt',
-      'gt',
-      'notempty',
-      'empty',
+    _control_keyword: $ => choice(
+
+      // control
+      'if', 'range', 'in', 'notin', 'switch', 'case', 'defined', 'else',
+      // repeat 
+      'volist', 'foreach', 'for',
+      // compare
+      'neq', 'eq', 'egt', 'elt', 'lt', 'gt', 'notempty', 'empty',
+      // block
+      'block', 'literal'
     ),
+
+    extend_statement: $ => seq($.extend_keyword, $._attributes, WS, "/"),
+    extend_keyword: _ => choice('include', 'extend', 'default'),
+
 
     // 语言函数 {:__('text')}
     function_statement: $ => prec.right(
       seq(':',
-         choice(
+        choice(
           alias($.identifier, $.function),
           $.variable_statement,
         ),
@@ -119,14 +116,6 @@ module.exports = grammar({
       $.identifier,
       '__'
     ),
-
-    block_statement: $ => seq(
-      $.block_keyword, field('attributes', $._attributes)
-    ),
-    block_keyword: $ => choice('block', 'literal',),
-
-    extend_statement: $ => seq($.extend_keyword, $._attributes, WS, "/"),
-    extend_keyword: $ => choice('include', 'extend'),
 
     // 辅助规则
     // 
@@ -143,7 +132,7 @@ module.exports = grammar({
       $.identifier,
     ),
 
-    identifier: $ => /[a-zA-Z_][a-zA-Z0-9_]*/,
+    identifier: _ => /[a-zA-Z_][a-zA-Z0-9_]*/,
     _name: _ => REGEX_NAME,
     string: $ => choice(
       seq("'", $._string_inclue, "'"),
@@ -157,17 +146,17 @@ module.exports = grammar({
       $.comparison_operator,
       WS
     ),
-    
+
     // 比较运算符
-    comparison_operator: $ => choice('==', '!=', '>', '<'),
+    comparison_operator: _ => choice('==', '!=', '>', '<'),
     // 逻辑运算符
-    operator: $ => choice('AND', 'OR' ,'/','\\','(',')'),
+    operator: _ => choice('AND', 'OR', '/', '\\', '(', ')'),
 
     literal: $ => choice($.number, $.boolean, $.string),
     number: $ => choice($.integer, $.float),
     integer: _ => /\d+/,
     float: _ => /\d+\.\d+/,
-    boolean: _ => choice('true', 'false'),    
+    boolean: _ => choice('true', 'false'),
   }
 });
 
