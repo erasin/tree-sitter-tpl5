@@ -1,8 +1,10 @@
-; 基本元素
 (line_comment) @comment.line
 (block_comment) @comment.block
+
+(number (float)) @constant.numeric.float
+(number (integer)) @constant.numeric.integer
+(boolean) @constant.builtin.boolean
 (string) @string
-(number) @number
 
 (control) @keyword.control.conditional
 (control_repeat) @keyword.control.repeat
@@ -28,6 +30,9 @@
 [
   "|"
   "."
+  "AND"
+  "OR"
+  "=="
 ] @operator
 
 [
